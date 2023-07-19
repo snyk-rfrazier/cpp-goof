@@ -12,28 +12,28 @@ jobs:
     environment: snyk-npm
     runs-on: ubuntu-latest
 
-strategy:
-  matrix:
-    node-version: [16.x]
+    strategy:
+      matrix:
+        node-version: [16.x]
 
-steps:
-  - uses: actions/checkout@v2
-  - name: Use Node.js ${{ matrix.node-version }}
-    uses: actions/setup-node@v2
-    with:
-      node-version: ${{ matrix.node-version }}
-      cache: 'npm'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-  - name: Setup Snyk + snyk-to-html # For information about the required commands for generating an HTML report see https://github.com/snyk/snyk-to-html
-    run: |
-      npm install snyk -g
-      snyk auth ${{secrets.SNYK_AUTH}}
+      - name: Setup Snyk + snyk-to-html 
+        run: |
+          npm install snyk -g
+          snyk auth ${{secrets.SNYK_AUTH}}
 
-  - name: Snyk Open Source # For testing and failing please add snyk test before snyk monitor
-    run: |
-      snyk monitor --unmanaged
-# For a list of additional available flags/options see: https://docs.snyk.io/snyk-cli/commands
+      - name: Snyk Open Source 
+        run: |
+          snyk monitor --unmanaged
 
-#   - name: Snyk Code # Remove || true to fail if there are vulnerabilities
-#     run: |
-#       snyk code test --severity-threshold=high || true
+
+      - name: Snyk Code # Remove || true to fail if there are vulnerabilities
+        run: |
+          snyk code test --severity-threshold=high || true
