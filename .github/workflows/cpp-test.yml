@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Setup Snyk + snyk-to-html 
+      - name: Setup Snyk
         run: |
           npm install snyk -g
           snyk auth ${{secrets.SNYK_AUTH}}
